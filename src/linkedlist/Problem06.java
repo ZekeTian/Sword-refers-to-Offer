@@ -23,7 +23,8 @@ public class Problem06 {
     public static void main(String[] args) {
         int[] nums = { 1, 3, 2 };
         
-        _06Solution1 solution = new _06Solution1();
+//        _06Solution1 solution = new _06Solution1();
+        _06Solution2 solution = new _06Solution2();
         
         ListNode head = ListUtil.createList(nums);
 
@@ -35,7 +36,7 @@ public class Problem06 {
 }
 
 /**
- * 利用栈（或者用递归）
+ * 解法一：利用栈（或者用递归）
  */
 class _06Solution1 {
     
@@ -55,3 +56,32 @@ class _06Solution1 {
         return resultArr;
     }
 }
+
+
+/**
+ * 解法二：两次遍历，第一次遍历获取长度，第二次遍历反着放数字
+ */
+class _06Solution2 {
+    
+    public int[] reversePrint(ListNode head) {
+        ListNode cur = head;
+        int len = 0;
+        while (null != cur) {
+            ++len;
+            cur = cur.next;
+        }
+
+        int[] resultArr = new int[len];
+        cur = head;
+        int count = 0;
+        while (null != cur) {
+            resultArr[len - 1 - count] = cur.val; // 在数组中反方向开始放元素
+            cur = cur.next;
+            ++count;
+        }
+        
+        return resultArr;
+    }
+}
+
+
