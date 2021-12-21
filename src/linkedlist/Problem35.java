@@ -20,34 +20,66 @@ import linkedlist._35Solution1.Node;
  * 
  */
 public class Problem35 {
-
-    public static void main(String[] args) {
+    
+    private static void testSolution1() {
         _35Solution1 solution = new _35Solution1();
         
-       Node node1 = solution.new Node(3);
-       Node node2 = solution.new Node(3);
-       Node node3 = solution.new Node(3);
-       
-       node1.next = node2;
-       node1.random = null;
-       
-       node2.next = node3;
-       node2.random = node1;
-       
-       node3.next = node3.random = null;
-       
-       Node head = solution.copyRandomList(node1);
-       
-       Node cur = head;
-       while (null != cur) {
-           System.out.println(cur + " ");
-           cur = cur.next;
-       }
+        Node node1 = solution.new Node(3);
+        Node node2 = solution.new Node(3);
+        Node node3 = solution.new Node(3);
+        
+        node1.next = node2;
+        node1.random = null;
+        
+        node2.next = node3;
+        node2.random = node1;
+        
+        node3.next = node3.random = null;
+        
+        Node head = solution.copyRandomList(node1);
+        
+        Node cur = head;
+        while (null != cur) {
+            System.out.println(cur + " ");
+            cur = cur.next;
+        }
+    }
+
+    private static void testSolution2() {
+        _35Solution2 solution = new _35Solution2();
+        
+        _35Solution2.Node node1 = solution.new Node(3);
+        _35Solution2.Node node2 = solution.new Node(3);
+        _35Solution2.Node node3 = solution.new Node(3);
+        
+        node1.next = node2;
+        node1.random = null;
+        
+        node2.next = node3;
+        node2.random = node1;
+        
+        node3.next = node3.random = null;
+        
+        _35Solution2.Node head = solution.copyRandomList(node1);
+        
+        _35Solution2.Node cur = head;
+        while (null != cur) {
+            System.out.println(cur + " ");
+            cur = cur.next;
+        }
+    }
+
+    public static void main(String[] args) {
+        
+//        testSolution1();
+
+        testSolution2();
+
     }
 }
 
 /**
- * 借助 Map 实现
+ * 解法一：借助 Map 实现
  */
 class _35Solution1 {
      class Node {
@@ -98,5 +130,87 @@ class _35Solution1 {
         }
         
         return dummyHead2.next;
+    }
+}
+
+/**
+ * 解法二：将复制的节点插入到原来链表节点的后面，这样便满足下面的关系：
+ *      复制节点的 random = 原来节点 random 的下一个节点。
+ *      如下图所示：a' 是 a 的复制节点。a 的 random 节点是 b，a' 的 random 节点是 b'，b' 是 b 的下一个节点。
+ *       ---------
+ *      /         ↘
+ *      a -> a' -> b -> b' -> c -> c' -> null
+ *           \         ↗
+ *            ---------
+ * 具体思路如下：
+ *     第一遍循环，复制节点，并将复制节点添加到原节点后面
+ *     第二遍循环，复制 random 的引用关系（即利用上面的关系）
+ *     第三遍循环，将复制节点和原节点断开
+ */
+class _35Solution2 {
+    class Node {
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+        
+        @Override
+        public String toString() {
+            return  val + "";
+        }
+    }
+    
+    public Node copyRandomList(Node head) {
+        if (null == head) {
+            return null;
+        }
+     
+        // 第一遍循环，复制节点，并插入到原节点后面
+        Node cur = head;
+        while (null != cur) {
+            Node copyNode = new Node(cur.val); // 复制节点，然后插入到原节点后面
+            Node next = cur.next;
+            copyNode.next = next;
+            cur.next = copyNode;
+            
+            cur = next; // 向后移动，继续复制
+        }
+        
+        // 第二遍循环，复制 random 引用关系
+        cur = head;
+        while (null != cur) {
+            Node copyNode = cur.next; // 复制节点在原节点后面
+            Node next = copyNode.next;
+            
+            if (null != cur.random) {
+                copyNode.random = cur.random.next; // 复制节点的 random 是在原节点的 random 后面
+            }
+            
+            cur = next; // 向后移动，继续复制
+        }
+        
+        // 第三遍循环，将原节点和复制节点断开
+        Node newHead = head.next;
+        cur = head;
+        while (null != cur) {
+            Node copNode = cur.next;
+            Node next = copNode.next;
+            
+            cur.next = next; // 原节点指向原来的 next
+            if (null != next) { // 如果 cur 是最后一个节点，next 可能为空，所以此处要判空处理
+               copNode.next = next.next; // 复制节点指向复制的 next
+            } else {
+                copNode.next = null;
+            }
+            
+            cur = next; // 向后移动，继续断开操作
+        }
+        
+        return newHead;
     }
 }
