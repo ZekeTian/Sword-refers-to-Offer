@@ -17,7 +17,9 @@ public class Problem05 {
     public static void main(String[] args) {
         String s = "We are happy.";
         
-        _05Solution1 solution = new _05Solution1();
+//        _05Solution1 solution = new _05Solution1();
+
+        _05Solution2 solution = new _05Solution2();
         
         System.out.println(solution.replaceSpace(s));
     }
@@ -27,5 +29,23 @@ class _05Solution1 {
     
     public String replaceSpace(String s) {
         return s.replaceAll(" ", "%20");
+    }
+}
+
+
+class _05Solution2 {
+    
+    public String replaceSpace(String s) {
+        StringBuilder builder = new StringBuilder();
+        
+        for (int i = 0; i < s.length(); ++i) {
+            if (' ' == s.charAt(i)) {
+                builder.append("%20");
+            } else {
+                builder.append(s.charAt(i));
+            }
+        }
+        
+        return builder.toString();
     }
 }
