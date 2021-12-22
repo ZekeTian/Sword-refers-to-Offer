@@ -24,7 +24,9 @@ public class Problem58 {
         String s = "abcdefg";
         int k = 2;
                 
-        _58Solution1 solution = new _58Solution1();
+//        _58Solution1 solution = new _58Solution1();
+
+        _58Solution2 solution = new _58Solution2();
         
         
         System.out.println(solution.reverseLeftWords(s, k));
@@ -38,4 +40,17 @@ class _58Solution1 {
     }
 }
 
-
+class _58Solution2 {
+    public String reverseLeftWords(String s, int n) {
+        StringBuilder builder = new StringBuilder();
+        
+        for (int i = n; i < s.length(); ++i) {
+            builder.append(s.charAt(i));
+        }
+        for (int i = 0; i < n; ++i) {
+            builder.append(s.charAt(i));
+        }
+        
+        return builder.toString();
+    }
+}
