@@ -32,7 +32,7 @@ public class Problem53II {
 }
 
 /**
- * 解法一：循环
+ * 解法一：循环求解
  */
 class _53IISolution1 {
     
@@ -51,4 +51,29 @@ class _53IISolution1 {
     }
 }
 
-
+/**
+ * 解法二：二分搜索求解
+ *      数组中若缺失一个值，则在缺失值左边一定是相等的（因为前面是连续的），而在缺失值右边一定是不相等的。
+ *      在二分搜索时，如果 mid == nums[mid]，则说明在左边，需要去右边寻找第一个缺失的位置，即 left = mid + 1
+ *                如果 mid != nums[mid]，则说明在右边，需要去左边寻找第一个缺失的位置，即 right = mid - 1
+ */
+class _53IISolution2 {
+    
+    public int missingNumber(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            // 若缺失一个值，则在缺失值左边一定是相等的，而在缺失值右边一定是不相等的
+            if (nums[mid] == mid) { // 相等，则此时 mid 在左边，需要去右边去寻找
+                left = mid + 1;
+            } else { // 不相等，则此时 mid 在右边，需要向左边逼近
+                right = mid - 1;
+            }
+        }
+        
+        return left; // 因为相等时，left + 1，所以 left 是保存着第一个不相等位置的下标
+    }
+}
