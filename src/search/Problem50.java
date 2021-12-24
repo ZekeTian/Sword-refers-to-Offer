@@ -1,5 +1,9 @@
 package search;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/
  * 
@@ -22,8 +26,9 @@ public class Problem50 {
     public static void main(String[] args) {
         String s = "abaccdeff";
         
-        _50Solution1 solution = new _50Solution1();
-        
+//        _50Solution1 solution = new _50Solution1();
+
+        _50Solution2 solution = new _50Solution2();
         
         System.out.println(solution.firstUniqChar(s));
     }
@@ -37,6 +42,10 @@ public class Problem50 {
 class _50Solution1 {
     
     public char firstUniqChar(String s) {
+        if (null == s || 0 == s.length()) {
+            return ' ';
+        }
+        
         int[] count = new int[26];
         // 第一次循环统计次数
         for (int i = 0; i < s.length(); ++i) {
@@ -55,4 +64,35 @@ class _50Solution1 {
         return ' ';
     }
 }
+
+
+/**
+ * 解法二：使用 LinkedHashMap。从而可以按照字符出现的顺序存储各字符的次数，方便寻找第一个只出现一次的字符。
+ *      因此，针对 “找出第一个只出现xx次的” 问题，可以采取本题中的两种解题思路，第一种是两次循环 + HashMap，第二种是两次循环 + LinkedHashMap
+ */
+class _50Solution2 {
+    
+    public char firstUniqChar(String s) {
+        if (null == s || 0 == s.length()) {
+            return ' ';
+        }
+        
+        LinkedHashMap<Character, Integer> map = new LinkedHashMap<>();
+        for (int i = 0; i < s.length(); ++i) {
+            Integer count = map.getOrDefault(s.charAt(i), 0);
+            map.put(s.charAt(i), count + 1);
+        }
+        
+        Set<Map.Entry<Character, Integer>> set =  map.entrySet();
+        
+        for (Map.Entry<Character, Integer> e : set) {
+            if (1 == e.getValue()) {
+                return e.getKey();
+            }
+        }
+        
+        return ' ';
+    }
+}
+
 
