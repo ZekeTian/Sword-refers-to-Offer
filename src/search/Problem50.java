@@ -68,7 +68,9 @@ class _50Solution1 {
 
 /**
  * 解法二：使用 LinkedHashMap。从而可以按照字符出现的顺序存储各字符的次数，方便寻找第一个只出现一次的字符。
- *      因此，针对 “找出第一个只出现xx次的” 问题，可以采取本题中的两种解题思路，第一种是两次循环 + HashMap，第二种是两次循环 + LinkedHashMap
+ *      因此，针对 “找出第一个只出现xx次的” 问题，可以采取本题中的两种解题思路：
+ *          第一种：两次循环 + HashMap，第二次循环遍历的是原始数据
+ *          第二种是两次循环 + LinkedHashMap，第二次循环遍历的是 LinkedHashMap
  */
 class _50Solution2 {
     
